@@ -1,0 +1,53 @@
+<!-- registration/templates/registration/sample_list.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample List</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Sample List</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Sample ID</th>
+                <th>Sample Name</th>
+                <th>Sample Type</th>
+                <th>Industry Type</th>
+                <th>Date of Registration</th>
+                <th>Registered By</th>
+                <th>Stage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sample in samples %}
+            <tr>
+                <td>{{ sample.sample_id }}</td>
+                <td>{{ sample.sample_name }}</td>
+                <td>{{ sample.sample_type }}</td>
+                <td>{{ sample.industry_type }}</td>
+                <td>{{ sample.date_of_registration }}</td>
+                <td>{{ sample.registered_by }}</td>
+                <td>{{ sample.stage }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
