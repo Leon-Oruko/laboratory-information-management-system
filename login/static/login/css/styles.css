@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Ledger&family=Pacifico&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto";
+}
+
+body {
+    background: linear-gradient(rgba(128, 0, 128, 0.5), rgba(128, 0, 128, 0.5)), url('{% static "login/svg/background.svg" %}');
+    background-size: 100%;
+    background-position: center;
+    overflow: hidden;
+    height: 100%;
+    width: 100%;   
+    background-repeat: no-repeat;
+}
+
+.overlay {
+    background-color: rgba(14, 4, 23, 0.9);        
+    width: 100vw;
+    height: 100vh;
+    padding: 20px; /* Add padding for spacing */
+    
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 0;
+    width: 50%;   
+    place-self: center;
+    margin-inline: auto; 
+}
+
+.logo {
+    background-color: #EAE6F7;
+    padding: 20px; /* Add padding for spacing */
+    /* width: 50%; Limit width */
+}
+
+.logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.form {
+    background-color: #D9C6ED;    
+    place-content: center;
+    justify-content: center;    
+    /* width: 50%; Limit width */
+}
+
+input:active,
+input:enabled,
+input:in-range {
+    border: 3px;
+    outline: gray;    
+}
+

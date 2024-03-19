@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'registration/css/styles.css' %}">
+    <title>Document</title>
+</head>
+<body class="overflow-hidden">
+    <!-- App bar -->
+    <nav class="sticky top-0 z-50 w-screen">
+        <div class="nav-center">
+        <!-- Search -->
+        <form action="">
+            <input type="search" placeholder="search" class="rounded-md outline-none p-1">
+        </form>
+        <!-- Logged in user -->
+        <div class="account">
+            <span class="text-white rounded-full bg-gray-900 p-2 h-10 w-10 flex justify-center">
+                LU
+            </span>
+            <p class='text-white'>Logged in user</p>
+        </div>
+        </div>
+        <!-- Logout -->
+        <div class="logout">
+        <a href="" class="text-blue-200">Logout</a>
+        <i class="fa fa-sign-out text-green-950" aria-hidden="true"></i>
+        </div>
+    </nav>
+    <nav class="side-menu bg-gray-900 overflow-hidden  fixed h-screen justify-start py-10">
+        <div>
+            <a href="{% url 'samples' %}" class="dashboard {% if request.path == '/register/samples/' %}bg-indigo-100 text-gray-900 {% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
+                <i class="fa fa-tachometer mr-1"></i>
+                <p class="block whitespace-nowrap px-3">Dashboard</p>
+            </a> 
+            
+            <a href="{% url 'new' %}" class="new-samples {% if request.path == '/register/new/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
+                <i class="fa fa-flask"></i>
+                <h1 class="block whitespace-nowrap px-3">New Sample</h1>
+            </a>
+                       
+        </div>
+
+    </nav>
+    <div class="content flex justify-center mb-10 ">
+        {% block content %}
+        {% endblock %}
+    </div>
+</body>
+</html>

@@ -43,14 +43,16 @@ class User(AbstractUser):
 
 class Sample(models.Model):
     REGISTRATION = 'registration'
-    ANALYST_TASK = 'analystTask'
-    AGRONOMIST_TASK = 'agronomistTask'
-    LAB_MANAGER_TASK = 'labManagerTask'
+    ANALYST_TASK = 'analysis'
+    AGRONOMIST_TASK = 'recommendation'
+    LAB_MANAGER_TASK = 'processing'
+    COMPLETE='complete'
     STAGE_CHOICES = [
         (REGISTRATION, 'Registration stage'),
         (ANALYST_TASK, 'Analysis stage'),
         (AGRONOMIST_TASK, 'Recommendation stage'),
-        (LAB_MANAGER_TASK, 'Invoice stage'),
+        (LAB_MANAGER_TASK, 'Processing stage'),
+        (COMPLETE,'Complete')
     ]
 
     sample_id = models.CharField(max_length=20, unique=True)

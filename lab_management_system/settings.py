@@ -31,20 +31,42 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'compressor',
+    'channels', 
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'channels',
-    'daphne',
+    'core',      
     'login',
-    'registration'
+    'registration',
+    "cssmin",
+    "jsmin",
+    
    
     
 ]
+
+
+STATICFILES_FINDERS = ( ##django compressor
+'django.contrib.staticfiles.finders.FileSystemFinder',
+'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# other finders..
+'compressor.finders.CompressorFinder',
+)
+STATIC_URL = '/static/'
+
+COMPRESS_ENABLED = True
+COMPRESS_ROOT = STATIC_URL ##django compressor
+COMPRESS_OFFLINE = False
+
+if not COMPRESS_ENABLED: ##django compressor
+    COMPRESS_ENABLED = True
+COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"] ##django compressor
 
 CHANNEL_LAYERS = {
     'default': {
@@ -136,7 +158,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = '/static/'
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
