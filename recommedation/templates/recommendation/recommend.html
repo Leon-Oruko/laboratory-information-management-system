@@ -1,0 +1,87 @@
+{% extends 'recommendation/base.html' %}
+{% block content %}
+{%  load static %}
+<!-- <link rel="stylesheet" href="{% static 'analysis/css/styles.css' %}"> -->
+<!-- Container for the records -->
+<div class="container mx-auto p-4 overflow-scroll">
+    <!-- Card for the record -->
+    <div class="bg-white p-4 rounded shadow-lg w-full">
+      <!-- <h2 class="text-xl font-bold mb-4">
+        {% if samples %} Recommend{% else %} No Tasks yet {% endif %}
+
+      </h2> -->
+      <div class="border-b border-gray-200 mb-2"></div>
+      
+      <!-- Record with dropdown -->
+      <h1 class="text-xl font-bold mb-4">Chemical</h1>      
+      {% for sample in chemical_samples %}
+      <details class="mb-4">
+        <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+          <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+          <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+        </summary>
+        <div class="pl-4 pr-2 pb-2">
+          <!-- Details to show when the dropdown is open -->
+          <br>
+          <textarea name="" disabled id="" >
+            {{ sample.chemical.analysis }}
+          </textarea>
+          <form method="post" action="{% url 'recommedation:recommend' %}">
+            {% csrf_token %}
+            <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
+            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
+            <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
+        </form>
+          
+        </div>
+      </details>
+      {% endfor %}
+      <!-- Repeat the above block for each record -->
+      <br>
+      <h1 class="text-xl font-bold mb-4">Microbio</h1>      
+      {% for sample in microbio_samples %}
+      <details class="mb-4">
+        <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+          <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+          <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+        </summary>
+        <div class="pl-4 pr-2 pb-2">
+          <!-- Details to show when the dropdown is open -->
+          <textarea name="" disabled id="" >
+            {{ sample.microbio.analysis }}
+          </textarea>
+          <form method="post" action="{% url 'recommedation:recommend' %}">
+            {% csrf_token %}
+            <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
+            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
+            <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
+        </form>
+        </div>
+      </details>
+      {% endfor %}
+
+      <h1 class="text-xl font-bold mb-4">Full</h1>      
+      {% for sample in full_samples %}
+      <details class="mb-4">
+        <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+          <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+          <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+        </summary>
+        <div class="pl-4 pr-2 pb-2 flex-row">
+          <!-- Details to show when the dropdown is open -->
+          <textarea name="" disabled id="" >
+            {{ sample.full.analysis }}
+          </textarea>
+          <form method="post" action="{% url 'recommedation:recommend' %}">
+            {% csrf_token %}
+            <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
+            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
+            <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
+        </form>
+        </div>
+      </details>
+      {% endfor %}
+    </div>
+    
+  </div>
+{% endblock %}

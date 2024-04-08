@@ -1,0 +1,6 @@
+{% load static %}
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<!-- div to have equal auto height and auto width  -->
+<div class="w-20 bg-blue-300 flex justify-center place-items-center size-px  h-20 rounded-full">
+    <img src="{% static 'management/images/user.png' %}" alt="{{ user.username }}" class="w-10 h-10 rounded-full">
+</div>

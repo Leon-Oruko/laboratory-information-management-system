@@ -77,7 +77,8 @@
         tbody {
             display: block;
             max-height: 43vh; /* Set the maximum height for the scrollable area */
-            overflow-y: auto; 
+            overflow-y: auto; /* Enable vertical scrolling*/
+            overflow-x: auto; /* Enable horizontal scrolling */            
             overflow: auto;
             table-layout: fixed; 
         }
@@ -128,8 +129,8 @@
             <tr>
                 <td>{{ sample.sample_id }}</td>
                 <td>{{ sample.sample_name }}</td>
-                <td>{{ sample.sample_type }}</td>
-                <td>{{ sample.industry_type }}</td>
+                <td>{{ sample.test_id }}</td>
+                <td>{{ sample.customer.industry }}</td>
                 <td>{{ sample.date_of_registration }}</td>
                 <td>{{ sample.registered_by }}</td>
                 <td>{{ sample.stage }}</td>

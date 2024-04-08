@@ -1,0 +1,7 @@
+<!-- custom_dropdown_with_button.html -->
+<select name="{{ widget.name }}"{{ widget.attrs }}>
+    {% for option in widget.choices %}
+        <option value="{{ option.value }}">{{ option.label }}</option>
+    {% endfor %}
+</select>
+<button type="button" onclick="openRegistrationForm()">Register New Client</button>

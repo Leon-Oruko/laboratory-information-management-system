@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'registration',
     "cssmin",
     "jsmin",
-    
+    'analysis',
+    'recommedation',
+    'management'
    
     
 ]
@@ -141,7 +143,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Specify the custom user model
-AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'core.CustomUsers' 
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -154,7 +156,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-
+LOGIN_URL = 'login:login'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -164,3 +166,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]

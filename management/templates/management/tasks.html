@@ -1,0 +1,37 @@
+{% extends 'management/base.html' %}
+{% block content %}
+{% load static %}
+<!-- tailwind cdn -->
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<!-- hide scroll bar -->
+<div  class="container bg-white p-10 rounded-lg  overflow-y-scroll">    
+    {% if tasks %}
+    {% for task in tasks %}
+    <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ task.sample_id }}</h5>
+        <textarea disabled>
+        {{ task.chemical.analysis }}
+        {{ task.microbio.analysis }}
+        {{ task.full.analysis }}
+        </textarea>
+        <textarea disabled>
+        {{ task.chemical.recommendation }}
+        {{ task.microbio.recommendation }}
+        {{ task.full.recommendation }}
+        </textarea>
+        <!-- <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">{{ task.due_date }}</p>         -->
+        <form action="{% url 'management:manager-tasks' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="sample_id" value="{{ task.sample_id }}">
+            <button class="bg-green-700 p-2 rounded-lg" >PROCESS</button>
+        </form>
+    </div>    
+    {% endfor %}   
+    {% else %}
+    <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">No Tasks</h5>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

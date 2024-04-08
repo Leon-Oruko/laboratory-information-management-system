@@ -8,26 +8,60 @@
     <link rel="stylesheet" href="{% static 'login/css/styles.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'styles.css' %}"> -->
     <title>Login</title>
+    <style>
+        .form {
+            max-width: 600px;
+            /* margin: auto; */
+        }
+        input[type="text"],input[type='password'], select{
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body style="background-image: url('{% static "login/svg/background.svg" %}');">
     <div class="overlay">        
-        <div class="container">
-            <div class="logo rounded-l-lg">
+        <div class="container p-10 rounded-lg">
+            <!-- <div class="logo rounded-l-lg">
                 <img src="{% static 'login/svg/logo.svg' %}" alt="Logo">
-            </div>
-            <div class="form justify-center flex-col  p-4 gap-5">
+            </div> -->
+            <div class="form justify-center flex-col  p-10 rounded-lg">
+                <!-- messege -->
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Error!</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                        {% else %}
+                        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Success!</strong>
+                            <span class="block sm:inline">{{ message }}</span>
+                        </div>
+                        {% endif %}                        
+                    {% endfor %}                                  
+                {% endif %}
                 <h2 class="text-black text-3xl mb-10 mt-5">Login</h2>
-                <form method="post" class="max-w-md mx-auto">
+                <form method="post" action="{% url 'login:login' %}" class="form">
                     {% csrf_token %}
-                    <div class="mb-10">
-                        <input type="text" id="username" name="username" placeholder="Username" class="bg-gray-100 w-full active:bg-gray-300 rounded-md p-2">
+                    <div class="flex-col mb-10 ">
+                        {{ form.username }}
                     </div>
-                    <div class="mb-20">
-                        <input type="password" id="password" name="password" placeholder="Password" class="bg-gray-100 w-full rounded-md p-2">
+                    <div class="flex-col mb-10 ">
+                        {{ form.password }}
                     </div>
                     <div class="flex justify-start gap-2">
-                        <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Login</button>
-                        <button type="submit" class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded">Signup</button>
+                        <input  type="submit" class="bg-black hover:bg-gray-800 text-white font-bold w-full p-4 rounded"></input>                        
                     </div>
                 </form>
                 

@@ -1,0 +1,73 @@
+{% extends 'recommendation/base.html' %}
+{% block content %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Display</title>
+    <!-- Include Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-200 p-10">
+    <div class="container mx-auto">
+        <!-- Card for the record -->
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Recommendation History</h2>
+                <!-- Repeat the above block for each record -->                
+                <h1 class="text-xl font-bold mb-4">Chemical</h1>      
+                {% for sample in samples_with_chemical %}
+                <details class="mb-4">
+                    <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+                    <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+                    <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+                    </summary>
+                    <div class="pl-4 pr-2 pb-2">
+                    <!-- Details to show when the dropdown is open -->
+                    <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
+                    <textarea disabled >{{ sample.chemical.recommendation }}</textarea>
+                    </div>
+                </details>
+                {% endfor %}
+            <!-- Repeat for each record -->
+                <!-- Repeat the above block for each record -->                
+                <h1 class="text-xl font-bold mb-4">Microbio</h1>      
+                {% for sample in samples_with_microbio %}
+                <details class="mb-4">
+                    <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+                    <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+                    <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+                    </summary>
+                    <div class="pl-4 pr-2 pb-2">
+                    <!-- Details to show when the dropdown is open -->
+                    <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
+                    <textarea disabled >{{ sample.microbio.recommendation }}</textarea>
+                    </div>
+                </details>
+                {% endfor %}
+            <!-- Repeat for each record -->
+            <!-- Repeat the above block for each record -->                
+            <h1 class="text-xl font-bold mb-4">Full Analysis</h1>      
+            {% for sample in samples_with_full %}
+            <details class="mb-4">
+                <summary class="flex justify-between items-center bg-gray-100 p-2 rounded cursor-pointer hover:bg-gray-200 transition">
+                <span>{{ sample.sample_id }} - {{ sample.sample_type }} - {{ sample.industry_type }} - {{ sample.registered_by.first_name }} ~ {{ sample.date_of_registration }}</span>
+                <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
+                </summary>
+                <div class="pl-4 pr-2 pb-2">
+                <!-- Details to show when the dropdown is open -->
+                <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
+                <textarea disabled >{{ sample.full.recommendation }}</textarea>
+                </div>
+            </details>
+            {% endfor %}
+        <!-- Repeat for each record -->
+        </div>
+    </div>
+</body>
+</html>
+
+
+{% endblock %}

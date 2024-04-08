@@ -1,0 +1,26 @@
+{% extends 'analysis/base.html' %}
+{% block content %}
+{% load static %}
+
+<span>{{ sample.sample_id }}  {{sample.sample_type }} {{ Sample.industry_type }}  {{ sample.registered_by }}  </span>
+
+<!-- area to type anaylsis -->
+<form action="{% url 'analysis:analyse_task' sample.sample_id %}" method="post" class="">
+    {% csrf_token %}
+    <div class="flex flex-col mb-4">
+        <label for="analysis" class="mb-2">Analysis:</label>
+        <!-- <textarea name="analysis" id="analysis" cols="30" rows="10" placeholder="Type your analysis here..." class="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
+            
+        </textarea>  -->
+        <table>
+            <!-- {{ form.sample }} -->
+            {{ form.analysis }}
+        </table>
+    </div>
+    <div class="flex justify-start">
+        <input type="submit" value="Save" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
+    </div>
+</form>
+
+
+{% endblock %}

@@ -20,26 +20,26 @@
         </form>
         <!-- Logged in user -->
         <div class="account">
-            <span class="text-white rounded-full bg-gray-900 p-2 h-10 w-10 flex justify-center">
-                LU
+            <span class="text-white rounded-full bg-gray-400 p-2 h-10 w-10 flex justify-center">
+                A
             </span>
-            <p class='text-white'>Logged in user</p>
+            <p class='text-white'>Welcome, {{ request.user.get_username }}!<p/>
         </div>
         </div>
         <!-- Logout -->
         <div class="logout">
-        <a href="" class="text-blue-200">Logout</a>
+        <a href="{% url 'login:logout' %}" class="text-blue-200">Logout</a>
         <i class="fa fa-sign-out text-green-950" aria-hidden="true"></i>
         </div>
     </nav>
     <nav class="side-menu bg-gray-900 overflow-hidden  fixed h-screen justify-start py-10">
         <div>
-            <a href="{% url 'samples' %}" class="dashboard {% if request.path == '/register/samples/' %}bg-indigo-100 text-gray-900 {% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
+            <a href="{% url 'registration:samples' %}" class="dashboard {% if request.path == '/register/samples/' %}bg-indigo-100 text-gray-900 {% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
                 <i class="fa fa-tachometer mr-1"></i>
                 <p class="block whitespace-nowrap px-3">Dashboard</p>
             </a> 
             
-            <a href="{% url 'new' %}" class="new-samples {% if request.path == '/register/new/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
+            <a href="{% url 'registration:new' %}" class="new-samples {% if request.path == '/register/new/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
                 <i class="fa fa-flask"></i>
                 <h1 class="block whitespace-nowrap px-3">New Sample</h1>
             </a>

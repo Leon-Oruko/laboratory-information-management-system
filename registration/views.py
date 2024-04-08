@@ -1,25 +1,38 @@
 from django.shortcuts import render,redirect
-from .forms import SampleRegistrationForm
-from core.models import Sample
+from .forms import SampleRegistrationForm,ClientRegisterationForm
+from core.models import Sample,CustomUsers
 
 from django.db.models import Count
 from django.db.models.functions import Coalesce
+from django.contrib.auth.decorators import login_required, permission_required
+from core.decorator import role_required
 # Create your views here.
+@login_required
+@role_required([CustomUsers.ADMIN,CustomUsers.LAB_MANAGER])
 def sample_registration_view(request):
+
     if request.method == 'POST':
         form = SampleRegistrationForm(request.POST)
+        client_form=ClientRegisterationForm(request.POST)
         if form.is_valid():
             # Save the form data to create a new sample object
             sample = form.save(commit=False)
             sample.registered_by = request.user  # Assuming the user is authenticated
             sample.stage = Sample.REGISTRATION  # Set the default stage
             sample.save()
-            return render(request, 'registration/success.html')  # Redirect to success page
+            return redirect('registration:samples')  # Redirect to success page
+        if client_form.is_valid():
+            client=client_form.save(commit=False)
+            # client.registered_by=request.user
+            client.save()
+            return redirect('registration:new')
     else:
         form = SampleRegistrationForm()
-    return render(request, 'registration/new.html', {'form': form})
+        client_form=ClientRegisterationForm()
+    return render(request, 'registration/new.html', {'form': form,'client_form':client_form})
 
-
+@login_required
+@role_required([CustomUsers.ADMIN,CustomUsers.LAB_MANAGER])
 def sample_list_view(request):
     samples = Sample.objects.all()
     interested_groups = ['registration', 'analysis', 'recommendation', 'processing', 'complete']

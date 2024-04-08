@@ -1,0 +1,79 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+body{
+    background-color: #EAE6F7;    
+}
+nav {
+    background-color: #5F46A5;
+    display: flex;
+    justify-content: space-between; /* Adjusted for better spacing */
+    padding: 10px;
+    align-items: center;
+}
+
+.nav-center {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Increase gap for visual separation */
+    /* margin-left: 200px; */
+}
+
+.account {
+    display: flex;
+    align-items: flex-end; /* Align items vertically */    
+}
+
+.logout {
+    display: flex;
+    align-items: center; /* Align items vertically */
+    gap: 5px;
+}
+
+/* Additional styles for search input and logout link */
+input[type="search"] {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+a {
+    color: #81A1C1; /* Adjusted color for better visibility */
+    text-decoration: none; /* Remove underline */
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.3s; /* Smooth background transition */
+}
+
+a:hover {
+    background-color: #5F46A5; /* Background color on hover */
+}
+
+.side-menu{
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 200px;
+    transition: all 200ms linear;
+}
+.side-menu:hover{
+    width: 200px;
+}
+
+.dashboard,.new-samples{
+    width: 200px;
+    margin-left: 50px;
+    margin-top: 10px;
+    padding: 8px;    
+}
+
+.content{
+    padding-left: 230px;
+    padding-right: 40px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+
