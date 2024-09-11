@@ -2,72 +2,97 @@
 {% block content %}
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sample Table</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  th {
-    background-color: #f2f2f2;
-  }
-  tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  .pick-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-</style>
-</head>
-<body>
-{% if samples %}
-<h1>Pick Samples</h1>
-{% else %}
-<h1>No samples available</h1>
-{% endif %}
-<table>
-  <tr>
-    <th>SampleID</th>
-    <th>SampleType</th>
-    <th>Industry</th>
-    <th>RegistrationDate</th>
-    <th>Pick</th>
-  </tr>
-  {% for sample in samples %}
-  <tr>
-    <td>{{ sample.sample_id }}</td>
-    <td>{{ sample.test_id }}</td>
-    <td>{{ sample.customer.industry }}</td>
-    <td>{{ sample.registered_by.username }} - {{ sample.date_of_registration }}</td>
-    <td><form action="{% url 'analysis:sample-list-view' %}" method="post">
-      {% csrf_token %}
-      <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
-      <button type="submit" class="bg-green-400 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Pick</button>
-  </form>      
-    </td>
-  </tr>
-  {% endfor %}
-  <!-- Repeat the row block for more entries -->
-</table>
-
-</body>
-</html>
+<HTML LANG="EN">
+<HEAD>
+<META CHARSET="UTF-8">
+<META NAME="VIEWPORT" CONTENT="WIDTH=DEVICE-WIDTH, INITIAL-SCALE=1.0">
+<TITLE>Sample Table</TITLE>
+<STYLE>
+    /* BODY {
+        FONT-FAMILY: ARIAL, SANS-SERIF;
+        BACKGROUND-COLOR: #FAFAFA;
+        MARGIN: 0;
+        PADDING: 20PX;
+    } */
+    .h1 {
+        COLOR: #333;
+        font-weight: 700;
+        font-size: larger;        
+    }
+    TABLE {
+        WIDTH: 100%;
+        BORDER-COLLAPSE: COLLAPSE;
+        MARGIN-TOP: 20PX;
+        BOX-SHADOW: 0 2PX 4PX RGBA(0, 0, 0, 0.1);
+    }
+    TH, TD {
+        BORDER: 1PX SOLID #DDD;
+        PADDING: 12PX;
+        TEXT-ALIGN: LEFT;
+    }
+    TH {
+        BACKGROUND-COLOR: #F2F2F2;
+        COLOR: #333;
+        FONT-WEIGHT: BOLD;
+    }
+    TR:NTH-CHILD(EVEN) {
+        BACKGROUND-COLOR: #F9F9F9;
+    }
+    .PICK-BUTTON {
+        BACKGROUND-COLOR: #4CAF50;
+        COLOR: WHITE;
+        PADDING: 5PX 10PX;
+        BORDER: NONE;
+        BORDER-RADIUS: 4PX;
+        CURSOR: POINTER;
+        TRANSITION: BACKGROUND-COLOR 0.3S EASE;
+    }
+    .PICK-BUTTON:HOVER {
+        BACKGROUND-COLOR: #45A049;
+    }
+    .table-container {
+            width: 90%;
+            margin: 20px 0;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Ensures no overflow beyond container */
+        }
+</STYLE>
+</HEAD>
+<BODY>   
+    <div class="table-container">
+      {% if samples %}
+      <H1 class="h1">Pick Samples</H1>
+      {% else %}
+      <H1 class="h1">No Samples Available</H1>
+      {% endif %}
+      <TABLE>
+        <TR>
+            <TH>SampleID</TH>
+            <TH>SampleType</TH>
+            <TH>Industry</TH>
+            <TH>RegistrationDate</TH>
+            <TH>Pick</TH>
+        </TR>
+        {% for sample in samples %}
+        <TR>
+            <TD>{{ sample.sample_id }}</TD>
+            <TD>{{ sample.test_id }}</TD>
+            <TD>{{ sample.customer.industry }}</TD>
+            <TD>{{ sample.registered_by.username }} - {{ sample.date_of_registration }}</TD>
+            <TD>
+                <FORM ACTION="{% url 'analysis:sample-list-view' %}" METHOD="POST">
+                    {% csrf_token %}
+                    <INPUT TYPE="HIDDEN" NAME="sample_id" VALUE="{{ sample.sample_id }}">
+                    <BUTTON TYPE="SUBMIT" CLASS="PICK-BUTTON">Pick</BUTTON>
+                </FORM>
+            </TD>
+        </TR>
+        {% endfor %}
+    </TABLE>
+    </div>
+</BODY>
+</HTML>
 {% endblock %}

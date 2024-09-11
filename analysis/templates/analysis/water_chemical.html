@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Water Quality Table</title>
+        <!-- Include Tabulator CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/css/tabulator.min.css" rel="stylesheet">
+        <style>
+            #water-quality-table-{{ sample.sample_id }} {
+            width: 100%; /* Ensure table fills its container */
+            height: max-content; /* Set a fixed height or adjust dynamically*/
+        }
+        </style>
+    </head>
+    <body>              
+    <div id="water-quality-table-{{ sample.sample_id }}"></div>         
+    
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/js/tabulator.min.js"></script>
+    <script>
+        // Define your data (you can load it dynamically from an API or other sources)
+        // if ("{{ sample.analysis }}" !== "") {
+            function convertToJSON(htmlEncodedString) {
+                // Convert HTML-encoded characters to their respective symbols
+                const decodedString = unescape(htmlEncodedString);
+                // Replace single quotation marks with double quotation marks for valid JSON
+                const jsonString = decodedString.replace(/&#x27;/g, '"');
+                // Parse the corrected string into JSON
+                const jsonArray = JSON.parse(jsonString);
+                return jsonArray;
+            }        
+                       
+            new Tabulator("#water-quality-table-{{ sample.sample_id }}", {
+            data: convertToJSON('{{ sample.analysis }}'),
+            layout: "fitColumns",
+            columns: [              
+                { title: "Parameters", field: "parameters" },               
+                { title: "KS EAS 12:2018 Max. Limits in mg/L", field: "max limits"} ,
+                { title: "Test Method", field: "test method"} ,
+                { title: "Results", field: "results"},  
+                { title: "Remarks", field: "remarks"}  
+            ],
+        });   
+                
+        // Create the Tabulator table
+                                 
+    </script>
+    </html>

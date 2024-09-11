@@ -1,0 +1,41 @@
+{% extends 'management/base.html' %}
+{% block content %}
+{% load static %}
+<!-- tailwind cdn -->
+<link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<style>
+    
+    .conten,.conten_i {
+        overflow-y: auto; /* Enable vertical scrolling */
+        scrollbar-width: thin; /* Thin scrollbar */
+        max-height: 500px; /* Maximum height before scrolling */
+        scroll-behavior: smooth; /* Smooth scrolling behavior (optional) */
+    }
+    .conten_i{
+        max-height: 200px;
+        margin-top: 30px;
+        
+    }
+</style>
+
+<div class="conten bg-white p-10 rounded-lg">
+    <div id="invoice">
+        {% include 'management/k.html' %}
+    </div>    
+</div>
+<script>
+    // function openPrintPage(url) {
+    //     // Open the external page in a new window
+    //     window.open(url, '_blank', 'height=600,width=800');
+    // }
+    function printInvoice(){
+        content=document.getElementById('invoice')
+        const iframe = document.createElement('iframe');
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+        iframe.contentDocument.body.innerHTML = invoice.innerHTML;
+        iframe.contentWindow.print();
+    }
+    
+</script>
+{% endblock %}

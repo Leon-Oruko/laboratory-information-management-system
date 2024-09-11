@@ -3,15 +3,21 @@
 {%  load static %}
 <!-- <link rel="stylesheet" href="{% static 'analysis/css/styles.css' %}"> -->
 <!-- Container for the records -->
+<style>
+  .conten{
+      overflow-y: auto;
+      scrollbar-width: 10px;
+      max-height: 450px;
+      scroll-behavior: smooth;      
+  }
+</style>
 <div class="container mx-auto p-4">
     <!-- Card for the record -->
-    <div class="bg-white p-4 rounded shadow-lg w-full">
+    <div class=" conten bg-white p-4 rounded shadow-lg w-full">  
       <h2 class="text-xl font-bold mb-4">
         {% if samples %} Analysis History{% else %} No Analysis History {% endif %}
-
       </h2>
-      <div class="border-b border-gray-200 mb-2"></div>
-      
+      <div class="border-b border-gray-200 mb-2"></div>      
       <!-- Record with dropdown -->
       {% for sample in samples %}
       <details class="mb-4">
@@ -19,16 +25,18 @@
           <span>{{ sample.sample.sample_id }} - {{ sample.sample.sample_type }} - {{ sample.sample.industry_type }} - {{ sample.sample.registered_by.first_name }} ~ {{ sample.sample.date_of_registration }}</span>
           <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
         </summary>
-        <div class="pl-4 pr-2 pb-2">
+        <div class="pl-4 pr-2 pb-2 m-10">
           <!-- Details to show when the dropdown is open -->
-          <textarea disabled class="text-gray-700 flex-col">{{ sample.analysis }}</textarea>
+          <div disabled class="text-gray-700 flex-col ">                     
+                {% include 'analysis/water_chemical.html' %}                                          
+          </div>
         </div>
+        
+
       </details>
+      
       {% endfor %}
       <!-- Repeat the above block for each record -->
     </div>
   </div>
-  
-
-
 {% endblock %}

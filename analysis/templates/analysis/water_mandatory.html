@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Water Quality Table</title>
+        <!-- Include Tabulator CSS -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/css/tabulator.min.css" rel="stylesheet">
+    </head>
+    <body>              
+    <div id="water-quality-table"></div>           
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/js/tabulator.min.js"></script>
+    <script>
+        function convertToJSON(htmlEncodedString) {
+                // Convert HTML-encoded characters to their respective symbols
+                const decodedString = unescape(htmlEncodedString);
+                // Replace single quotation marks with double quotation marks for valid JSON
+                const jsonString = decodedString.replace(/&#x27;/g, '"');
+                // Parse the corrected string into JSON
+                const jsonArray = JSON.parse(jsonString);
+                return jsonArray;
+            }
+        // Define your data (you can load it dynamically from an API or other sources)
+        if ("{{ sample.analysis }}" !== "") {
+            var tableData = JSON.parse('{{ sample.analysis }}');
+        }
+        else{
+        const tableData = [
+            // Your data rows here...
+            {first:"Aesthetic",parameters:"Oduor",method:"Organoleptic",results:"",maxLimits:"NIL"},
+            {first:"Aesthetic",parameters:"pH",method:"ISO 10523",results:"",maxLimits:"6.5 - 8.5"},
+            {first:"Aesthetic",parameters:"Colour, NTU, max",method:"ISO 7887",results:"",maxLimits:"50"},
+            {first:"Aesthetic",parameters:"Turbidity, in NTU",method:"ISO 7027-1",results:"",maxLimits:"25"},
+            {first:"Chemical",parameters:"Total Dissolved Solids, mg/l",method:"ASTM D 5907",results:"",maxLimits:"1000"},           
+            {first:"Chemical",parameters:"Nitrates as NO3-, mg/l",method:"ISO 7890-2",results:"",maxLimits:"45"},
+            {first:"Chemical",parameters:"Nitrites (NO2-N)",method:"ISO 6777",results:"",maxLimits:"0.9"},
+            {first:"Chemical",parameters:"Ammonia as NH3, mg/l",method:"ISO 11732",results:"",maxLimits:"0.5"},
+            {first:"Chemical",parameters:"Fluoride as F-, mg/l",method:"ISO 10359",results:"",maxLimits:"1.5"},            
+            {first:"Chemical",parameters:"Free residual chlorine, mg/l",method:"ISO 7393",results:"",maxLimits:"0.5"},
+            {first:"Chemical",parameters:"Total Iron as Fe, mg/l",method:"ISO 6332",results:"",maxLimits:"0.3"},
+            {first:"Chemical",parameters:"Aluminium as Al, mg/l",method:"ISO 12020",results:"",maxLimits:"0.2"},
+            {first:"Microbio",parameters:"Total Viable Counts @370C , cfu per ml",method:"ISO 6222",results:"",maxLimits:"50"},
+            {first:"Microbio",parameters:"Total Viable Counts @220C , cfu per ml",method:"ISO 6222",results:"",maxLimits:"100"},            
+        ];
+        }
+        try{            
+            const table = new Tabulator("#water-quality-table", {
+            data: convertToJSON('{{ sample.analysis }}'),
+            layout: "fitColumns",
+            columns: [
+                { title: "", field: "first" },
+                { title: "Parameters", field: "parameters" },
+                { title: "Method", field: "method" },
+                '{{ sample.analysis }}' ?  { title: "Results", field: "results"} :  { title: "Results", field: "results", editor: "input" },
+                { title: "1 Standard (Max Limits)", field: "maxLimits" },
+            ],
+        }); 
+        }
+        catch(error){
+            const table = new Tabulator("#water-quality-table", {
+            data: tableData,
+            layout: "fitColumns",
+            columns: [
+                { title: "", field: "first" },
+                { title: "Parameters", field: "parameters" },
+                { title: "Method", field: "method" },
+                '{{ sample.analysis }}' ?  { title: "Results", field: "results"} :  { title: "Results", field: "results", editor: "input" },
+                { title: "1 Standard (Max Limits)", field: "maxLimits" },
+            ],
+        }); 
+        }
+        // Create the Tabulator table                                   
+    </script>
+    </html>

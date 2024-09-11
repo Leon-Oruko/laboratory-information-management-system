@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUsers, Sample, SampleRegistration, AnalystTask, LabManagerTask, AgronomistTask, ChangeLog,Clients,Chemical,Microbio,Full,Industry
+from .models import CustomUsers, Sample, SampleRegistration, AnalystTask, LabManagerTask, AgronomistTask,Clients,Chemical,Microbio,Full,Industry,ChangeLog,Parameter
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 # Register your models here.
 
@@ -55,4 +55,10 @@ admin.site.register(Chemical)
 admin.site.register(Microbio)
 admin.site.register(Full)
 admin.site.register(Industry)
+class ParameterAdmin(admin.ModelAdmin):
+    list_display = ('name', 'max_limits', 'test_method', 'description', 'is_water', 'is_non_water')
+    list_filter = ('is_water', 'is_non_water')
+    search_fields = ('name', 'description')
+
+admin.site.register(Parameter, ParameterAdmin)
 admin.site.register(ChangeLog, ChangeLogAdmin)

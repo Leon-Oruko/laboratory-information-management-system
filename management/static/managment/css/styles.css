@@ -6,11 +6,14 @@ body{
     background-color: #EAE6F7;    
 }
 nav {
-    background-color: #5F46A5;
+    background-color: rgb(95, 70, 165,0.1);
     display: flex;
     justify-content: space-between; /* Adjusted for better spacing */
     padding: 10px;
     align-items: center;
+    background-blend-mode: overlay; /* This will blend the color and image */
+    background-size: cover; 
+    background-image: url('{% static "managment/images/bg.jpg" %}');
 }
 
 .nav-center {
@@ -75,6 +78,7 @@ a:hover {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
+    transition: all 2s cubic-bezier();
 }
 
 

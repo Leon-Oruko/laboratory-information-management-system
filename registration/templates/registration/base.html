@@ -9,6 +9,56 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'registration/css/styles.css' %}">
     <title>Document</title>
+    <STYLE>
+        nav {
+            background-color: rgba(95, 70, 165, 0.9);
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            align-items: center;
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-image: url('{% static "managment/images/bg.jpg" %}');
+        }
+        .toggle-nav{
+            width: 60px;
+            overflow: hidden;
+            display: flex;
+            padding-inline-start: 10px;
+            right: -10px;
+            z-index: 100;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+
+        }
+        .side-menu.minimized,.side-menu.minimized a {
+            width: 60px; /* Width when minimized */
+            place-items: center;
+        }
+        .side-menu.minimized h1
+         {
+            display: none; /* Hide text and icons when minimized */
+        }
+        .side-menu.minimized .fa
+         {
+            display: block; /* Hide text and icons when minimized */
+            place-self: center;
+        }
+        #toggleNav{
+            background-color: rgba(163, 133, 246, 0.9);
+            padding: 10px;
+            border-radius:10px ;
+            color: white;
+        }
+        .content.minimized{
+            padding-left: 90px;
+            padding-right: 40px;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    </STYLE>
 </head>
 <body class="overflow-hidden">
     <!-- App bar -->
@@ -43,7 +93,11 @@
                 <i class="fa fa-flask"></i>
                 <h1 class="block whitespace-nowrap px-3">New Sample</h1>
             </a>
-                       
+            <div class="toggle-nav ">
+                <button id="toggleNav" onclick="toggleNav()">
+                    <span class="arrow">◄</span>
+                </button>
+            </div>       
         </div>
 
     </nav>
@@ -51,5 +105,25 @@
         {% block content %}
         {% endblock %}
     </div>
+    <script>
+        function toggleNav() {
+            const sideNav = document.querySelector('.side-menu');
+            const contentArea = document.querySelector('.content');
+            const arrow = document.querySelector('#toggleNav .arrow');
+    
+            // Toggle the 'minimized' class to adjust the width of the side menu
+            sideNav.classList.toggle('minimized');
+    
+            // Toggle the 'minimized' class for the content area to adjust its margin
+            contentArea.classList.toggle('minimized');
+    
+            // Toggle the arrow direction
+            if (arrow.textContent === '◄') {
+            arrow.textContent = '►'; // Right arrow
+        } else {
+            arrow.textContent = '◄'; // Left arrow
+        }
+        }
+    </script>
 </body>
 </html>

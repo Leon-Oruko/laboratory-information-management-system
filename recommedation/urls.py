@@ -8,4 +8,5 @@ urlpatterns = [
     path('samples/', views.sample_list_view, name='samples'),
     path('recommend/', views.recommend, name='recommend'),
     path('history/', views.history, name='history'),
+    path('certificate/<path:sample_id>/',views.viewCertificate,name='recommedation_cert'),
 ]

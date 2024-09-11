@@ -1,0 +1,458 @@
+
+    {% load static %}
+    <SCRIPT src="https://code.jquery.com/jquery-3.6.0.min.js"></SCRIPT>
+    <STYLE>
+        body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f2f2f2;
+        margin: 0;
+        /* padding: 20px; */
+        height: 100%;
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding and border are included in element's total width and height */
+        }
+        .invoice_body{
+            padding: 50px;
+        }
+        #logo {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        p {
+            margin: 5px 0;
+        }
+        hr {
+            margin: 10px 0;
+        }
+        .address {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-inline: 20px;
+        }
+        .editable-div {
+            border-radius: 10px;
+            margin: 10px;
+            width: 100%;
+            min-height:150px;
+            max-width: 600px;
+            overflow: hidden;
+            padding: 10px;
+            border: 2px solid yellowgreen;
+            background-color: #f9f9f9;
+            white-space: pre-wrap;
+            line-height: 1.6;
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            align-items: start;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+            text-align: left;
+        }
+        .editable-div[contenteditable]:empty:before {
+            content: "DAVIS & SHIRTLIFF LTD\nPO Box 41762 - 00100 Nairobi, Kenya | +254 020 6968000 / 0711 079 000\nDirect Line: +254 711 079 485 / 020 6968 485 |\nElizabeth.Maina@dayliff.com";
+            color: #aaa;
+            pointer-events: none;
+            white-space: pre-wrap;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+            margin-inline:10px ;
+        }
+        th, td {
+            padding: 8px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-family: 'Candara';
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+            font-style: italic;
+            /* color:black; */
+        }
+        td[contenteditable="true"] {
+            background-color: #f9f9f9;
+        }
+        .hidden-border td {
+            border: none;
+        }
+        .total:active {
+            border: 0px transparent;
+            outline: none;
+        }
+        .center-text {
+            text-align: center;
+            color: darkblue;
+        }
+        .center-text-small {
+            text-align: center;
+            font-size: small;
+            color: yellowgreen;
+        }
+        .center-text-medium {
+            text-align: center;
+            font-size: medium;
+            color: darkblue;
+        }
+        .note {
+            font-size: 10px;
+            text-wrap: nowrap;
+            text-align: center;
+            color: green;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 12px;
+            text-wrap: nowrap
+        }
+        @font-face {
+        font-family: 'Lucida Handwriting Std Black';
+        src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/lucida/LucidaHandwritingStdRg.TTF') format('truetype');
+        /* Add other formats if needed */
+        }
+        @font-face {
+        font-family: 'Candara';
+        src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/candara/Candara.ttf') format('truetype');
+        /* Add other formats if needed */
+        }
+
+        @media print {  
+            .controls{
+                display: none;
+            }
+            @font-face {
+        font-family: 'Lucida Handwriting Std Black';
+        src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/lucida/LucidaHandwritingStdRg.TTF') format('truetype');
+        /* Add other formats if needed */
+        }
+        @font-face {
+        font-family: 'Candara';
+        src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/candara/Candara.ttf') format('truetype');
+        /* Add other formats if needed */
+        }   
+            body {
+                    font-family: 'Lucida Handwriting Std Black','Candara', sans-serif !important;
+                    padding-bottom:100px ;
+                    padding-top:100px ;
+                }   
+            @page{
+                size: A4 landscape;
+                margin: 0;
+                enable-background: accumulate;
+
+            }
+            body {
+                background-color: white;
+                margin: 0;
+                padding: 0;
+            }
+            .invoice_body {
+                padding: 0;
+            }
+            #header, #footer {
+                position: fixed;
+                width: 100%;
+            }
+            #header {
+                top: 0;
+                border-bottom: 2px solid blue;
+            }
+            #footer {
+                bottom: 0;
+                border-top: 2px solid #82b1ff;
+            }
+            #content {
+                margin-top: 150px; /* Adjust according to header height */
+                margin-bottom: 150px; /* Adjust according to footer height */
+                height: auto;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            table {
+                page-break-after: auto;
+            }
+            tr {
+                page-break-inside: avoid;
+                page-break-after: auto;            
+            }
+            thead {
+                display: table-header-group;
+            }
+            tfoot {
+                display: table-footer-group;
+            }
+            
+        }
+        .overlay {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            font-size: 24px;
+            z-index: 200;
+        }
+        .btn-with-icon:hover .overlay {
+            display: block;
+        }
+        
+    </STYLE>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Matura+MT+Script+Capitals&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lucida+Handwriting&display=swap">
+    <body style="background-color: #f2f2f2;" >
+        <div class="top">
+            <div id="logo">
+                <center>
+                    <img width="300px" src="{% static 'managment/images/k.png' %}" alt="">
+                </center>
+            </div>
+            <center>
+                <p style="place-items: center; justify-content: center; font-size: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-wrap: nowrap; display: flex; align-items: center; width: max-content;">
+                    <span style="font-family: 'Candara';">Buru Buru Arcade Building, 2nd Floor. Mumias Road. P. O. Box 57199 00200 Tel.: 0729223985, NAIROBI. Email: info@precisescienceltd.com Website: </span>
+                    <a style="text-decoration: none; color: #82bff8;" href="https://www.precisescienceltd.com">www.precisescienceltd.com</a>
+                </p>
+            </center>
+            <hr color="blue" style="padding: 0; margin: 0;margin-bottom: 2px;" size="1px">
+            <hr color="blue" style="padding: 0; margin: 0;" size="1px">
+            <br>
+        </div>
+        {%  block certificate %}
+        {% endblock %}
+        <div class="address">
+            <div>
+                <DIV style="font-family: 'Candara';font-weight: 550;"  id="doc_type" contenteditable="true">Quotation No:</DIV>
+                <DIV style="text-align: right;" contenteditable="true">0</DIV>
+            </div>
+            <span style="font-family: Candara; font-style: 50;">{{ current_datetime|date:"l, F d, Y" }}</span>
+        </div>
+        <div class="address">
+            <p style="font-family: Candara; font-style: 100;">SHIP TO:</p>  
+        </div>  
+        <div class="address" style="display: flex; flex-direction: row;align-items: center;text-align: center;">
+            <div>
+                <DIV style="font-family: Calibri;" class="editable-div" contenteditable="true"></DIV>
+            </div>
+            <div style="position: relative; border-radius: 30px; display: flex; justify-content: center; min-width: 250px;">
+                <!-- <div class="background" style="position: absolute;">
+                    <img style="border-radius: 10px; border: 4px solid yellowgreen;" src="{% static 'managment/images/purple.png' %}" alt="Background">
+                </div> -->
+                <div style="display: flex; justify-content: center; padding: 50px;background-color: purple;padding: 40px;margin-right: 10px;border-radius: 20px;">
+                    <DIV style=" font-family: 'Candara'; display: flex; flex-direction: column; place-content: center; place-items:center; align-items: center; margin-inline: 50px; justify-content: center; color: white; padding: 16px; left: 0;">
+                        <center>Total Amount</center>
+                        <center><SPAN id="total">0</SPAN></center>
+                    </DIV>
+                </div>
+            </div>
+        </div>
+        <br>
+        <TABLE id="editableTable">
+            <THEAD>
+                <TR>
+                    <TH>Item No</TH>
+                    <TH>Description</TH>
+                    <TH>Quantity</TH>
+                    <TH>Unit Price</TH>
+                    <TH>Discount</TH>
+                    <TH>Amount</TH>
+                </TR>
+            </THEAD>
+            <TBODY>
+                <TR class="editableRow">
+                    <TD contenteditable="false"></TD>
+                    <TD contenteditable="true"></TD>
+                    <TD contenteditable="true"></TD>
+                    <TD contenteditable="true"></TD>
+                    <TD contenteditable="true"></TD>
+                    <TD contenteditable="true"></TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD align="right" style="text-align: right;border-right: 1px solid #333;font-style: italic;">PIN NO</TD>
+                    <TD>P051705265N</TD>
+                    <TD>Subtotal:</TD>
+                    <TD id="subtotal">0</TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD  style="text-align: right;border-right: 1px solid #333;font-style: italic;">Bank Account Details</TD>
+                    <TD>COOPERATIVE BANK OF KENYA,MSA RD</TD>
+                    <TD>VAT:</TD>
+                    <TD id="vat">0</TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD style="text-align: right;border-right: 1px solid #333;font-style: italic;">Ac Number</TD>
+                    <TD>01148505698900</TD>
+                    <TD>TOTAL:</TD>
+                    <TD id="total_cell">0</TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD style="text-align: right;border-right: 1px solid #333;font-style: italic;">Bank Code</TD>
+                    <TD>11</TD>
+                    <TD>Paid:</TD>
+                    <TD contenteditable="true" id="paid">0</TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD style="text-align: right;border-right: 1px solid #333;font-style: italic;">Branch Code</TD>
+                    <TD>11127</TD>
+                    <TD>Balance:</TD>
+                    <TD id="balance">0</TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD style="text-align: right;border-right: 1px solid #333;font-style: italic;">Swift Code</TD>
+                    <TD>KCOOKENA</TD>
+                    <TD></TD>
+                    <TD></TD>
+                </TR>
+                <TR class="hidden-border" style="font-size: 18px;">
+                    <TD></TD>
+                    <TD></TD>
+                    <TD style="text-align: right;border-right: 1px solid #333;font-style: italic;" >MPESA Paybill Option</TD>
+                    <TD>Business NO.: | <b>400222</b></TD>
+                    <TD></TD>
+                    <TD></TD>
+                </TR>
+            </TBODY>
+        </TABLE>
+        <div class="bottom">
+            <br>
+        <hr color="#82b1ff">
+        <center class="center-text-medium"><p  style="font-family: 'Lucida Handwriting Std Black';">THANK YOU FOR YOUR BUSINESS</p></center>
+        <br><br>
+        <hr color="yellowgreen">
+        <center class="center-text-small" style="font-weight: 600;font-size: medium;
+        font-family: 'Matura MT Script Capitals', cursive;
+        color: rgba(18, 173, 42, 1)">We are precise!</center>
+        <br>
+        <center class="note">
+            <span>•</span> <span style="color: black; font-family: 'Candara';">This document is property of the Precise Science Ltd, is confidential and should not be duplicated or reproduced without prior written approval from the company</span>
+        </center>
+        </div>
+        <div class="controls">
+            <button id="generate" onclick="printInvoice()" class="bg-blue-400 text-gray-200 hover:bg-black hover:text-white" style="border:none; position: absolute;z-index: 100;top: 18%;left: 85%;padding: 5px;min-width: 90px;" class="invoice_btn btn-with-icon">
+                Generate
+                <div id="overlay" class="overlay">
+                    <div class="icon">+</div>
+                </div>
+            </button>
+            <button onclick="changeType('Invoice No')" class="bg-purple-400 text-gray-200 hover:bg-black hover:text-white" style="border:none; position: absolute;z-index: 100;top: 12%;left: 69%;padding: 5px;min-width: 90px;" >
+                Invoice
+            </button><button onclick="changeType('Quotation No')" class="bg-black text-gray-200 hover:bg-black hover:text-white" style="border:none; position: absolute;z-index: 100;top: 12%;left: 75%;padding: 5px;min-width: 90px;" class="invoice_btn btn-with-icon">
+                Quotation
+            </button><button onclick="changeType('Cutomer Statement No')" class="bg-black text-gray-200 hover:bg-black hover:text-white" style="border:none; position: absolute;z-index: 100;top: 12%;left: 81%;padding: 5px;min-width: 90px;" class="invoice_btn btn-with-icon">
+                Customer Statement
+            </button>
+        </div>
+    </body>
+    <SCRIPT>
+        
+        $(document).ready(function() {
+                
+            function updateTotals() {
+                let subtotal = 0;
+                let vatRate = 0.16; // Example VAT rate of 15%
+                let paid = parseFloat($('#paid').text()) || 0;
+
+                $('#editableTable .editableRow').each(function() {
+                    let quantity = parseFloat($(this).find('td:eq(2)').text()) || 0;
+                    let unitPrice = parseFloat($(this).find('td:eq(3)').text()) || 0;
+                    let discount = parseFloat($(this).find('td:eq(4)').text()) || 0;
+                    let amount = (quantity * unitPrice) - discount;
+
+                    if (!isNaN(amount)) {
+                        subtotal += amount;
+                        $(this).find('td:eq(5)').text(amount.toFixed(2));
+                    }
+                });
+
+                let vat = subtotal * vatRate;
+                let balance = subtotal + vat - paid;
+                let total = subtotal + vat;
+                $('#subtotal').text(subtotal.toFixed(2));
+                $('#vat').text(vat.toFixed(2));
+                $('#balance').text(balance.toFixed(2));
+                $('#total').text(total.toFixed(2));
+                $('#total_cell').text(total.toFixed(2));
+            }
+
+            function updateItemNumbers() {
+                $('#editableTable .editableRow').each(function(index) {
+                    $(this).find('td:eq(0)').text(index + 1);
+                });
+            }
+
+            $('#editableTable').on('keydown', 'td[contenteditable]', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    let newRow = $('<tr class="editableRow">' +
+                        '<td contenteditable="false"></td>' +
+                        '<td contenteditable="true"></td>' +
+                        '<td contenteditable="true"></td>' +
+                        '<td contenteditable="true"></td>' +
+                        '<td contenteditable="true"></td>' +
+                        '<td contenteditable="true"></td>' +
+                    '</tr>');
+                    $(this).closest('tr').after(newRow);
+                    newRow.find('td:eq(1)').focus();
+                    updateItemNumbers();
+                    updateTotals();
+                } else if ((event.key === 'Backspace' || event.key === 'Delete') && $(this).text() === '' && $(this).index() === 1 && $(this).closest('tr').siblings().length > 1 && $(this).closest('tr').index() !== 0) {
+                    event.preventDefault();
+                    $(this).closest('tr').remove();
+                    updateItemNumbers();
+                    updateTotals();
+                }
+            });
+
+            $('#editableTable').on('input', 'td[contenteditable]', function() {
+                updateTotals();
+            });
+
+            $('#paid').on('input', function() {
+                updateTotals();
+            });
+
+            // Initialize item numbers
+            updateItemNumbers();
+        });
+        function changeType(name){
+            $('#doc_type').text(name)
+        }
+        button.addEventListener('mouseleave', function() {
+                document.getElementById('overlay').style.display = 'none';
+            });
+        $('.btn-with-icon').click(function() {
+                let buttonType = $(this).text().trim();
+                let divId = buttonType.replace(/\s+/g, '_').toLowerCase(); // Converts to lowercase with underscores
+
+                // Create and append a new div with the respective id
+                $('<div>', {
+                    id: divId,
+                    class: 'editable-div',
+                    contenteditable: 'true',
+                    text: buttonType + ' content here...' // Placeholder content
+                }).appendTo('body'); // Change 'body' to your desired container
+            });
+    </SCRIPT>
+

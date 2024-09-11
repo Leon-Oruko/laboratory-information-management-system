@@ -10,11 +10,19 @@
     <title>Record Display</title>
     <!-- Include Tailwind CSS -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .conten{
+            overflow-y: auto;
+            scrollbar-width: 10px;
+            max-height: 450px;
+            scroll-behavior: smooth;      
+        }
+    </style>
 </head>
 <body class="bg-gray-200 p-10">
     <div class="container mx-auto">
         <!-- Card for the record -->
-        <div class="bg-white p-6 rounded-lg shadow-lg">
+        <div class="conten bg-white p-6 rounded-lg shadow-lg">
             <h2 class="text-xl font-bold mb-4">Recommendation History</h2>
                 <!-- Repeat the above block for each record -->                
                 <h1 class="text-xl font-bold mb-4">Chemical</h1>      
@@ -27,9 +35,10 @@
                     <div class="pl-4 pr-2 pb-2">
                     <!-- Details to show when the dropdown is open -->
                     <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
-                    <textarea disabled >{{ sample.chemical.recommendation }}</textarea>
+                    <textarea disabled >{{ sample.agronomist_task.recommendation }}</textarea>
                     </div>
                 </details>
+                <button onclick="openPrintPage('{% url 'recommedation:recommedation_cert' sample_id=sample.sample_id %}')" class="bg-blue-300 m-30 rounded-lg">Certificate</button>
                 {% endfor %}
             <!-- Repeat for each record -->
                 <!-- Repeat the above block for each record -->                
@@ -42,10 +51,11 @@
                     </summary>
                     <div class="pl-4 pr-2 pb-2">
                     <!-- Details to show when the dropdown is open -->
-                    <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
-                    <textarea disabled >{{ sample.microbio.recommendation }}</textarea>
+                    <textarea disabled class="text-gray-700">{{ sample.microbio.analysis }}</textarea>
+                <textarea disabled >{{ sample.agronomist_task.recommendation }}</textarea>
                     </div>
                 </details>
+                <button onclick="openPrintPage('{% url 'recommedation:recommedation_cert' sample_id=sample.sample_id %}')" class="bg-blue-300 m-30 rounded-lg">Certificate</button>
                 {% endfor %}
             <!-- Repeat for each record -->
             <!-- Repeat the above block for each record -->                
@@ -58,14 +68,21 @@
                 </summary>
                 <div class="pl-4 pr-2 pb-2">
                 <!-- Details to show when the dropdown is open -->
-                <textarea disabled class="text-gray-700">{{ sample.chemical.analysis }}</textarea>
-                <textarea disabled >{{ sample.full.recommendation }}</textarea>
+                <textarea disabled class="text-gray-700">{{ sample.full.analysis }}</textarea>
+                <textarea disabled >{{ sample.agronomist_task.recommendation }}</textarea>
                 </div>
+                <button onclick="openPrintPage('{% url 'recommedation:recommedation_cert' sample_id=sample.sample_id %}')" class="bg-blue-300 m-30 rounded-lg">Certificate</button>
             </details>
             {% endfor %}
         <!-- Repeat for each record -->
         </div>
     </div>
+    <script>
+        function openPrintPage(url) {
+            // Open the external page in a new window
+            window.open(url, '_blank', 'height=600,width=800');
+        }
+      </script>
 </body>
 </html>
 

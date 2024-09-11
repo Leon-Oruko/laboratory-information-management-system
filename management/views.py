@@ -3,13 +3,14 @@ from django.contrib.auth.decorators import permission_required, login_required
 # Create your views here.
 from django.shortcuts import render,redirect
 from registration.forms import SampleRegistrationForm
-from core.models import Sample,CustomUsers,LabManagerTask
+from core.models import Sample,CustomUsers,LabManagerTask,AnalystTask,AgronomistTask
 from .forms import  UserRegisterationForm
 from django.db.models import Count
 from django.db.models.functions import Coalesce
 from registration.forms import ClientRegisterationForm
 # Create your views here.
 from core.decorator import role_required
+from datetime import datetime
 # setting permissions for Lab Manager post
 @login_required
 @role_required([CustomUsers.LAB_MANAGER])
@@ -102,10 +103,13 @@ def tasks(request):
     # pick samples from labtask whose stage value in the sample model reads as Processing
     tasks = Sample.objects.filter(stage=Sample.LAB_MANAGER_TASK)      
     return render(request, 'management/tasks.html', {'tasks': tasks})
-
 @login_required
 @role_required([CustomUsers.LAB_MANAGER])
 def history(request):
     # pick samples from labtask whose stage value in the sample model reads as Complete
-    history = Sample.objects.filter(stage=Sample.COMPLETE)
+    history = Sample.objects.filter(stage=Sample.COMPLETE).select_related('chemical','microbio','full',)
     return render(request, 'management/history.html',{'history': history})
+
+def viewInvoice(request):
+    # print(sample_id)    
+    return render(request,'management/invoice.html',{'current_datetime':datetime.now()})

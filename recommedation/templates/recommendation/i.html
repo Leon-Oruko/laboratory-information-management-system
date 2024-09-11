@@ -1,0 +1,246 @@
+{% load static %}
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CERTIFICATE</title>
+    <style>
+        * {
+            font-family: Calibri;
+            margin: 0;
+            padding: 0;
+        }
+        .para1 {
+            display: flex;
+            flex-direction: column;
+        }
+        .para {
+            display: flex;
+            flex-direction: row;
+            gap: 100px;
+            margin: 0 auto;
+            width: 1000px;
+        }
+        #certificate {
+            margin: 0 auto;
+            width: 1200px;
+            border: 2px solid green;
+            padding: 10px;
+        }
+        .cert {
+            border: 2px solid transparent;
+            border-image: linear-gradient(to right, blue 50%, green 50%);
+            border-image-slice: 1;
+            padding: 0 auto;
+        }
+        footer {
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid transparent;
+            border-image: linear-gradient(to right, green 50%, blue 50%);
+            border-image-slice: 1;
+        }
+        .signatures {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding: 10px;
+        }
+        input {
+            border: none;
+            border-bottom: 1px dotted #000;
+            outline: none;
+            width: 200px;
+        }
+        #water-quality-table {
+            font-family: Arial;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        #water-quality-table th, #water-quality-table td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+        #water-quality-table th {
+            background-color: #f2f2f2;
+        }
+        @font-face {
+            font-family: 'Lucida Handwriting Std Black';
+            src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/lucida/LucidaHandwritingStdRg.TTF') format('truetype');
+        }
+        @font-face {
+            font-family: 'Candara';
+            src: url('https://raw.githubusercontent.com/Leooruko/fonts/main/candara/Candara.ttf') format('truetype');
+        }
+        .note {
+            font-size: 10px;
+            text-wrap: nowrap;
+            text-align: center;
+            color: green;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 12px;
+            text-wrap: nowrap;
+        }
+        #certificate th{
+            /* background-color: blueviolet; */
+            font-style: initial !important;
+        }
+        table{
+            font-family: Arial !important;
+        }
+        .included .top,.included .bottom{
+            display: none;
+        }
+        .included{
+            padding-inline: 30px;
+            padding-block: 50px;
+        }
+        #generate{
+            left: 89% !important;            
+        }
+        button{
+        background-color: #76a5f1;
+        cursor: pointer;
+        color: rgb(63, 5, 5);
+        transition: all 300ms linear;
+        animation: all 300ms linear;
+        min-height: 50px;
+        top: 0% !important;
+        position: fixed !important;
+        }
+        button:hover{
+            background-color: black;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="logo">
+        <center>
+            <img width="300px" src="{% static 'managment/images/k.png' %}" alt="">
+        </center>
+    </div>
+    <center>
+        <p style="place-items: center; justify-content: center; font-size: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; text-wrap: nowrap; display: flex; align-items: center; width: max-content;">
+            <span style="font-family: 'Candara';">Buru Buru Arcade Building, 2nd Floor. Mumias Road. P. O. Box 57199 00200 Tel.: 0729223985, NAIROBI. Email: info@precisescienceltd.com Website: </span>
+            <a style="text-decoration: none; color: #82bff8;" href="https://www.precisescienceltd.com">www.precisescienceltd.com</a>
+        </p>
+    </center>
+    <hr color="blue" style="padding: 0; margin: 0;margin-bottom: 2px;" size="1px">
+    <hr color="blue" style="padding: 0; margin: 0;" size="1px">
+    <br><br><br>
+    {% block certificate %}
+    <div id="certificate">
+        <div class="cert">            
+            <center><h2 style="font-family: Calibri;">CERTIFICATE OF ANALYSIS</h2></center> 
+            <div class="para">
+                <div class="para1">
+                    <p><b>CUSTOMER :&nbsp;&nbsp;</b>{{ main_sample.customer }}</p>
+                    <p><b>CERTIFICATE NO :&nbsp;&nbsp;</b>{{ main_sample.sample_id }}</p>
+                    <p><b>Sampled By:&nbsp;&nbsp;</b>{{ main_sample.customer }}</p>
+                </div>
+                <div class="para1">
+                    <p><b>SAMPLE :&nbsp;&nbsp;&nbsp;</b>{{ main_sample.sample_name }}</p>
+                    <p><b>REFERENCENO :&nbsp;&nbsp;</b> NA</p>
+                    <p><b>Date Sampled : &nbsp;&nbsp;</b>{{ samplepicked }}</p>        
+                </div>
+                <div class="para1">
+                    <p><b>SAMPLE IDENTIFICATION :&nbsp;&nbsp;</b>{{ main_sample.sample_id }}</p>
+                    <p><b>Date Analysis Started :&nbsp;&nbsp;</b>{{ sample.picked }}</p>
+                    <p><b>Date Analysis Completed :&nbsp;&nbsp;</b>{{ sample.analysis_date }}</p>
+                </div>
+            </div>                                                              
+            <div style="padding: 30px;">                                     
+                <table  id="water-quality-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr  style="background-color: green;">
+                            <th colspan="5" align="center" style="background-color: green; padding: 10px;">
+                                <center>ANALYTICAL DATA (Test Results)</center>
+                            </th>
+                        </tr>
+                        <tr style="background-color: lightgreen;">
+                            <th style="padding: 10px; width: 20%; background-color: lightgreen;">Parameter</th>
+                            <th style="padding: 10px; width: 20%; background-color: lightgreen;">KS EAS 12:2018. Limits in mg/L</th>
+                            <th style="padding: 10px; width: 20%; background-color: lightgreen;">Test Method</th>
+                            <th style="padding: 10px; width: 20%; background-color: lightgreen;">Results</th>
+                            <th style="padding: 10px; width: 20%; background-color: lightgreen;">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in analysis_data %}
+                        <tr>
+                            <td style="border: 1px solid black; padding: 10px;">{{ item.parameters }}</td>
+                            <td style="border: 1px solid black; padding: 10px;">{{ item.max_limits }}</td>
+                            <td style="border: 1px solid black; padding: 10px;">{{ item.test_method }}</td>
+                            <td style="border: 1px solid black; padding: 10px;">{{ item.results }}</td>
+                            <td style="border: 1px solid black; padding: 10px;">{{ item.remarks }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                 
+            </div>
+        </div>
+        <div style="padding-inline:20px;padding-block-start: 30px ;padding-block-end: 10px;">            
+            Abbreviations, symbols and acronyms
+        </div>
+        <div style="padding-inline:30px;padding-block-end: 20px ;">            
+            <ol>
+                <li>EAS East African Standard</li>
+                <li>KS Kenyan Standard</li>
+                <li>ISO Internation Organisation For Standardization </li>
+                <li>ASTM International Association For Testing Material</li>
+                <li>*Accredited parameter</li>
+            </ol>
+        </div>
+        <footer>
+            <sup>1</sup>Standard values are quoted from the KS EAS 946:2023 <br>
+            NS - Not specified <br>
+            RDA - Recommended Daily Allowance <br>
+            <= Less than: below the detection level of 0.001 mg/l
+            <hr>
+            COMMENTS:
+            <hr>
+            <h4>RECOMMENDATIONS:</h4>
+            {{ reco_sample.recommendation }}
+            <hr>
+            <div class="signatures">
+                <div class="analyst">
+                    <input type="text">
+                    <h4>Lab Analyst</h4>
+                    <h4 style="text-transform: uppercase">{{ sample.analyzed_by.username }}</h4>
+                </div>
+                <div class="manager">
+                    <input type="text">
+                    <h4>Quality Manager</h4>
+                    <h4 style="text-transform: uppercase">{{ reco_sample.reviewed_by.username }}</h4><br>
+                </div>
+            </div>
+        </footer>
+    </div>   
+    <div class="included">
+    {% include 'management/k.html' %} 
+    </div> 
+    {% endblock %}     
+    <br><br>
+    <hr color="#82b1ff">
+    <br>
+    <center class="center-text-medium"><p style="font-family: 'Lucida Handwriting Std Black';color: purple;">THANK YOU FOR YOUR BUSINESS</p></center>
+    <br><br>
+    <hr color="yellowgreen">
+    <center class="center-text-small" style="font-weight: 600;font-size: medium; font-family: 'Matura MT Script Capitals', cursive; color: rgba(18, 173, 42, 1)">We are precise!</center>
+    <br>
+    <center class="note">
+        <span>•</span> <span style="color: black; font-family: 'Candara';">This document is property of the Precise Science Ltd, is confidential and should not be duplicated or reproduced without prior written approval from the company</span>
+    </center>
+    <script>
+       function printInvoice() {
+            window.print();
+        }
+        // Run the print function when the DOM is fully loaded
+        // document.addEventListener('DOMContentLoaded', printDocument);
+    </script>
+</body>
+</html>

@@ -1,26 +1,176 @@
 {% extends 'analysis/base.html' %}
 {% block content %}
 {% load static %}
+<style>
+    #id_analysis, #id_recommendation, #id_sample {
+        display: none;
+    }
+    .table-container {
+            width: 90%;
+            margin: 20px 0;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Ensures no overflow beyond container */
+        }
+        .h1 {
+        COLOR: #333;
+        font-weight: 600;
+        font-size: large;
+    }
+    .info{
+        display: flex;
+        flex-direction: column;
+        COLOR: #333;
+        font-weight: 500;
+    }
+    .h{
+        COLOR: #333;
+        font-weight: 700;
+        font-size: larger;
+        
+    }
+</style>
+<label for="analysis" class="mb-2 h">Analysis:</label>
+<span class="info"><p>ID: {{ sample.sample_id }}</p>  {{ sample.sample_type }} {{ sample.industry_type }} <p>REGISTEREDBY: {{ sample.registered_by.username }}</p></span>
 
-<span>{{ sample.sample_id }}  {{sample.sample_type }} {{ Sample.industry_type }}  {{ sample.registered_by }}  </span>
-
-<!-- area to type anaylsis -->
-<form action="{% url 'analysis:analyse_task' sample.sample_id %}" method="post" class="">
+<!-- Form for analysis -->
+<form id="my-form" action="{% url 'analysis:analyse_task' sample.sample_id %}" method="post">
     {% csrf_token %}
-    <div class="flex flex-col mb-4">
-        <label for="analysis" class="mb-2">Analysis:</label>
-        <!-- <textarea name="analysis" id="analysis" cols="30" rows="10" placeholder="Type your analysis here..." class="border border-gray-300 rounded-md p-2 focus:outline-none focus:border-blue-500">
-            
-        </textarea>  -->
-        <table>
-            <!-- {{ form.sample }} -->
-            {{ form.analysis }}
-        </table>
+    <div class="flex flex-col mb-4">        
+        {{ form.analysis }}
+        {{ form.recommendation }}
+        {{ form.sample }}        
+        <!-- Table for displaying data -->
+        <div class="table-container">
+            {% if type == 'Full' %}
+                <label for="analysis" class="mb-2 h1">Full Analysis:</label>
+            {% elif type == 'Chemical' %}
+                <label for="analysis" class="mb-2 h1">Chemical Analysis:</label>
+            {% else %}
+                <label for="analysis" class="mb-2 h1">Microbiological Analysis:</label>
+            {% endif %}
+            <hr style="margin: 0;padding: 0;" color="blue">          
+            <div id="water-quality-table"></div>
+        </div>
+        <!-- Script for handling Tabulator and form submission -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/css/tabulator.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tabulator/5.0.7/js/tabulator.min.js"></script>        
     </div>
     <div class="flex justify-start">
         <input type="submit" value="Save" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer">
     </div>
 </form>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Function to convert HTML encoded string to JSON
+        function convertToJSON(htmlEncodedString) {
+            const decodedString = unescape(htmlEncodedString);
+            const jsonString = decodedString.replace(/&#x27;/g, '"');
+            const jsonArray = JSON.parse(jsonString);
+            return jsonArray;
+        }
 
+        // Sample data for the table (adjust as per your needs)
+        const parameters = convertToJSON('{{ parameters|escapejs }}');
+        console.log(parameters);
+
+        // Map the parameters to the table data
+        const tableData = parameters.map(param => ({
+            parameters: param.fields.name,
+            max_limits: param.fields.max_limits,
+            test_method: param.fields.test_method,
+            results: "",
+            remarks: ""
+        }));
+
+        // Custom editor to update remarks when results change
+        const customEditor = function(cell, onRendered, success, cancel) {
+            const input = document.createElement("input");
+            input.type = "number";
+            input.value = cell.getValue();
+            input.style.width = "100%";
+            input.style.boxSizing = "border-box";
+
+            onRendered(function() {
+                input.focus();
+                input.style.height = "100%";
+            });
+
+            input.addEventListener("change", function(e) {
+                success(input.value);
+                // Update remarks only when results change
+                if (cell.getField() === "results") {
+                    const row = cell.getRow();
+                    const rowData = row.getData();
+                    rowData.remarks = parseFloat(rowData.results) <= parseFloat(rowData.max_limits) ? 'Compliant' : 'Non-compliant';
+                    row.update(rowData);
+                }
+            });
+
+            return input;
+        };
+
+        // Initialize Tabulator
+        let analysis_table;
+        try {
+            analysis_table = new Tabulator("#water-quality-table", {
+                data: convertToJSON('{{ sample.analysis }}'),
+                layout: "fitColumns",
+                columns: [
+                    { title: "Parameters", field: "parameters" },
+                    { title: "KS EAS 12:2018 Max. Limits in mg/L", field: "max_limits" },
+                    { title: "Test Method", field: "test_method" },
+                    { title: "Results", field: "results", editor: customEditor },
+                    { title: "Remarks", field: "remarks" }
+                ],
+                cellEdited: function(cell) {
+                    if (cell.getField() === "results") {
+                        // Update remarks only for edits in the "Results" column
+                        const row = cell.getRow();
+                        const rowData = row.getData();
+                        rowData.remarks = parseFloat(rowData.results) <= parseFloat(rowData.max_limits) ? 'Compliant' : 'Non-compliant';
+                        row.update(rowData);
+                        console.log('Updated row:', rowData);
+                    }
+                }
+            });
+        } catch (error) {
+            console.log('couldnt', error);
+            analysis_table = new Tabulator("#water-quality-table", {
+                data: tableData,
+                layout: "fitColumns",
+                columns: [
+                    { title: "Parameters", field: "parameters" },
+                    { title: "KS EAS 12:2018 Max. Limits in mg/L", field: "max_limits" },
+                    { title: "Test Method", field: "test_method" },
+                    { title: "Results", field: "results", editor: customEditor },
+                    { title: "Remarks", field: "remarks" }
+                ],
+                cellEdited: function(cell) {
+                    if (cell.getField() === "results") {
+                        // Update remarks only for edits in the "Results" column
+                        const row = cell.getRow();
+                        const rowData = row.getData();
+                        rowData.remarks = parseFloat(rowData.results) <= parseFloat(rowData.max_limits) ? 'Compliant' : 'Non-compliant';
+                        row.update(rowData);
+                        console.log('Updated row:', rowData);
+                    }
+                }
+            });
+        }
+
+        // Form submission handling
+        document.getElementById("my-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const analysisData = JSON.stringify(analysis_table.getData());
+            document.getElementById("{{ form.analysis.auto_id }}").value = analysisData;
+            console.log(analysisData);
+            console.log(analysis_table.getData());
+            event.target.submit();
+        });
+    });
+</script>
 
 {% endblock %}

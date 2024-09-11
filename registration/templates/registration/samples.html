@@ -1,4 +1,3 @@
-<!-- registration/templates/registration/sample_list.html -->
 {% extends 'registration/base.html' %}
 {% block content %}
 {% load static %}
@@ -8,136 +7,258 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sample List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Lobster&display=swap" rel="stylesheet">
     <style>
-        img{
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #e0f7fa; /* Light blue/cyan background color */
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        img {
             width: 50%;
             height: 50%;
         }
+
         .stages {
             display: flex;
+            flex-wrap: wrap;
             padding: 20px;
+            justify-content: space-around;
         }
+
         .stage {
             display: flex;
-            font-size: 1cap;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1em;
             overflow: hidden;
-            height: 100px;
-            width: 100px;
-            background-color: #ffffff;
+            height: 150px;
+            width: 150px;          
             box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
             margin: 10px;
             padding: 20px;
             text-align: center;
             border-radius: 10px;
-            flex-basis: calc(33% - 20px); /* Adjust the width for three items per row */
+            transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+            /* color: #333; */            
+            font-family:monospace;
+            background-color: white;
+            font-weight: 600;
         }
+        .stage *{
+            color: #adcae9;
+        }
+        .stage:hover {
+            transform: translateY(-5px);
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Example colors for different stages */
+        
         .stage img {
-            max-width: 100px; /* Adjust the size of your SVGs */
+            max-width: 60px;
             height: auto;
             margin-bottom: 10px;
         }
+
         .stage h1 {
             margin-top: 10px;
-            font-size: 1.5em;
+            font-size: 1.2em;
+            color: #333;
         }
-        /* Set the table to have a fixed header */
+
+        .table-container {
+            width: 90%;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Ensures no overflow beyond container */
+        }
+
+        .table-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        .table-controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+        .table-controls button {
+            padding: 8px 12px;
+            margin-left: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .table-controls button:hover {
+            background-color: #0056b3;
+        }
+
         table {
             width: 100%;
-            margin-top: 20px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            border-collapse: collapse;
+            border-collapse: collapse;            
+            font-size: 15px;            
+            color: #333;
         }
 
-        /* Style table cells */
         th, td {
-            border: 1px solid #dddddd;
+            border-top: 1px solid #dddddd; /* Horizontal top border */
+            border-bottom: 1px solid #dddddd; /* Horizontal bottom border */
             text-align: left;
-            padding: 8px;
+            padding: 12px;            
+            color: #666; /* Light color for table cell values */
         }
-
-        /* Style the table header */
+        td{
+            font-family: monospace;
+            font-weight: 600;
+        }
         th {
             background-color: #f2f2f2;
             position: sticky;
             top: 0;
             z-index: 10;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #444;
         }
 
-        /* Alternate row colors */
         tr:nth-child(even) {
-            background-color: #f9f9f9;
-            background-color:  rgba(255, 255, 255, 0.3);
+            background-color: rgba(255, 255, 255, 0.8);
         }
 
         tr:nth-child(odd) {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.9);
         }
 
-        /* Make the table body scrollable */
         tbody {
+            max-height: 200px;
             display: block;
-            max-height: 43vh; /* Set the maximum height for the scrollable area */
-            overflow-y: auto; /* Enable vertical scrolling*/
-            overflow-x: auto; /* Enable horizontal scrolling */            
-            overflow: auto;
-            table-layout: fixed; 
+            overflow-y: auto; /* Enable vertical scrolling for tbody */
         }
 
-        thead,tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
+        thead, tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
         }
 
-        /* Hide the default scrollbar */
         tbody::-webkit-scrollbar {
             display: none;
         }
 
+        tr:hover {
+            background-color: #e0f7fa;
+            cursor: pointer;
+        }
+
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
     </style>
-    
 </head>
 <body>
-
-    <div class="stages flex">
+    <div class="stages">
         {% for stage, count in stage_stats.items %}
-        <div class="stage bg-white shadow-black mr-5 mb-5 mt-0 p-10">
-            <span class="bg-black text-white text-lg rounded-full h-5 w-5 p-3 flex justify-center place-items-center mr-2"> {{ count }}</span>
+        <div class="stage stage-{{ forloop.counter }}">
+            <span class="bg-black text-white text-lg rounded-full h-5 w-5 p-3 flex justify-center place-items-center mb-2"> {{ count }}</span>
             <img src="{% static 'registration/svg/' %}{{ stage }}.svg" alt="">
-            <br>
-            <h1>{{ stage }} </h1>
+            <h1>{{ stage }}</h1>
         </div>
         {% endfor %}
     </div>
-    
 
-    <!-- <h2>Sample List</h2> -->
-    <table>
-        <thead>
-            <tr>
-                <th>Sample ID</th>
-                <th>Sample Name</th>
-                <th>Sample Type</th>
-                <th>Industry Type</th>
-                <th>Date of Registration</th>
-                <th>Registered By</th>
-                <th>Stage</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sample in samples %}
-            <tr>
-                <td>{{ sample.sample_id }}</td>
-                <td>{{ sample.sample_name }}</td>
-                <td>{{ sample.test_id }}</td>
-                <td>{{ sample.customer.industry }}</td>
-                <td>{{ sample.date_of_registration }}</td>
-                <td>{{ sample.registered_by }}</td>
-                <td>{{ sample.stage }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-container">
+        <div class="flex justify-between">
+            <div class="table-title">Sample List</div>
+        <div class="table-controls">
+            <button onclick="window.location.href='{% url 'management:new-sample' %}'">Add New Sample</button>
+            <button id="export-btn">Export to CSV</button>
+        </div>
+        </div>
+        <div class="table-scrollable">
+            <table id="sample-table">
+                <thead>
+                    <tr>
+                        <th>Sample ID</th>
+                        <th>Sample Name</th>
+                        <th>Sample Type</th>
+                        <th>Industry Type</th>
+                        <th>Date of Registration</th>
+                        <th>Registered By</th>
+                        <th>Stage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sample in samples %}
+                    <tr>
+                        <td>{{ sample.sample_id }}</td>
+                        <td>{{ sample.sample_name }}</td>
+                        <td>{{ sample.test_id }}</td>
+                        <td>{{ sample.customer.industry.Industry_type }}</td>
+                        <td>{{ sample.date_of_registration }}</td>
+                        <td>{{ sample.registered_by.username }}</td>
+                        <td>{{ sample.stage }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // Function to export table to CSV format
+        function exportTableToCSV(filename) {
+            var csv = [];
+            var rows = document.querySelectorAll("#sample-table tbody tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var row = [], cols = rows[i].querySelectorAll("td, th");
+
+                for (var j = 0; j < cols.length; j++) 
+                    row.push(cols[j].innerText);
+
+                csv.push(row.join(","));
+            }
+
+            // Download CSV file
+            var csvFile = new Blob([csv.join("\n")], {type: "text/csv"});
+            var downloadLink = document.createElement("a");
+            downloadLink.download = filename;
+            downloadLink.href = window.URL.createObjectURL(csvFile);
+            downloadLink.style.display = "none";
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+        }
+
+        // Export to CSV button click event
+        document.getElementById("export-btn").addEventListener("click", function () {
+            var filename = "sample-list.csv";
+            exportTableToCSV(filename);
+        });
+    </script>
 </body>
 </html>
 {% endblock %}

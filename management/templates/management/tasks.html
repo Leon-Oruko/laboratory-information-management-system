@@ -3,13 +3,29 @@
 {% load static %}
 <!-- tailwind cdn -->
 <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+<style>
+    .content{
+        overflow-y: auto;
+        scrollbar-width: 10px;
+        max-height: 450px;
+        scroll-behavior: smooth; 
+    }
+</style>
 <!-- hide scroll bar -->
-<div  class="container bg-white p-10 rounded-lg  overflow-y-scroll">    
+<div  class="content scroll-m-2  w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 ">    
     {% if tasks %}
     {% for task in tasks %}
-    <div class="w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <iframe 
+    id="frame"
+    style="height: 0; width: 0;"
+    src="invoice.html" frameborder="0"></iframe>
+    <div class="  w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700  mb-12">
         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ task.sample_id }}</h5>
-        <textarea disabled>
+        {% include 'analysis/water_chemical.html' with sample=task.chemical %}
+        {% include 'analysis/water_chemical.html' with sample=task.microbio %}
+        {% include 'analysis/water_chemical.html' with sample=task.full %}
+        <br>
+        <textarea style="display: none;" disabled>                
         {{ task.chemical.analysis }}
         {{ task.microbio.analysis }}
         {{ task.full.analysis }}
@@ -23,7 +39,7 @@
         <form action="{% url 'management:manager-tasks' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="sample_id" value="{{ task.sample_id }}">
-            <button class="bg-green-700 p-2 rounded-lg" >PROCESS</button>
+            <button onclick="generatePDF()" type="submit" class="bg-green-700 p-2 rounded-lg" >PROCESS</button>
         </form>
     </div>    
     {% endfor %}   
@@ -33,5 +49,11 @@
     </div>
     {% endif %}
 </div>
-
+<script>
+    function generatePDF(){
+            let wspFrame=document.getElementById('frame').contentWindow;
+            wspFrame.focus();
+            wspFrame.print();
+        }
+</script>
 {% endblock %}

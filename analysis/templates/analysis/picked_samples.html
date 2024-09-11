@@ -36,12 +36,62 @@
     border-radius: 4px;
     cursor: pointer;
   }
+  
+    .h1 {
+        COLOR: #333;
+        font-weight: 700;
+        font-size: larger;
+    }
+    TABLE {
+        WIDTH: 100%;
+        BORDER-COLLAPSE: COLLAPSE;
+        MARGIN-TOP: 20PX;
+        BOX-SHADOW: 0 2PX 4PX RGBA(0, 0, 0, 0.1);
+    }
+    TH, TD {
+        BORDER: 1PX SOLID #DDD;
+        PADDING: 12PX;
+        TEXT-ALIGN: LEFT;
+    }
+    TH {
+        BACKGROUND-COLOR: #F2F2F2;
+        COLOR: #333;
+        FONT-WEIGHT: BOLD;
+    }
+    TR:NTH-CHILD(EVEN) {
+        BACKGROUND-COLOR: #F9F9F9;
+    }
+    .PICK-BUTTON {
+        BACKGROUND-COLOR: #4CAF50;
+        COLOR: WHITE;
+        PADDING: 5PX 10PX;
+        BORDER: NONE;
+        BORDER-RADIUS: 4PX;
+        CURSOR: POINTER;
+        TRANSITION: BACKGROUND-COLOR 0.3S EASE;
+    }
+    .PICK-BUTTON:HOVER {
+        BACKGROUND-COLOR: #45A049;
+    }
+    .table-container {
+            width: 90%;
+            margin: 20px 0;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* Ensures no overflow beyond container */
+        }
 </style>
 </head>
 <body>
 
 {% if samples %}
-<table>
+<div class="table-container">
+  <H1 class="h1">
+    Analyse Sample
+  </H1>
+  <table>
     <tr>
       <th>SampleID</th>
       <th>SampleType</th>
@@ -62,6 +112,7 @@
     {% endfor %}
     <!-- Repeat the row block for more entries -->
   </table>
+</div>
   {% else %}
   <p>No samples found.</p>
   {% endif %}

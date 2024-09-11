@@ -3,9 +3,17 @@
 {%  load static %}
 <!-- <link rel="stylesheet" href="{% static 'analysis/css/styles.css' %}"> -->
 <!-- Container for the records -->
-<div class="container mx-auto p-4 overflow-scroll">
+ <style>
+  .conten{
+      overflow-y: auto;
+      scrollbar-width: 10px;
+      max-height: 450px;
+      scroll-behavior: smooth;      
+  }
+ </style>
+<div class="container mx-auto p-4 ">
     <!-- Card for the record -->
-    <div class="bg-white p-4 rounded shadow-lg w-full">
+    <div class="conten bg-white p-4 rounded shadow-lg w-full">
       <!-- <h2 class="text-xl font-bold mb-4">
         {% if samples %} Recommend{% else %} No Tasks yet {% endif %}
 
@@ -23,13 +31,16 @@
         <div class="pl-4 pr-2 pb-2">
           <!-- Details to show when the dropdown is open -->
           <br>
-          <textarea name="" disabled id="" >
+          {% include 'analysis/water_chemical.html' with sample=sample.chemical %}
+          <br>
+          <textarea style="display: none;" name="" disabled id="" >
             {{ sample.chemical.analysis }}
           </textarea>
           <form method="post" action="{% url 'recommedation:recommend' %}">
             {% csrf_token %}
             <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
-            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
+            <textarea name="interpretation_text" cols="30" rows="5" placeholder="Enter Interpretation"></textarea>
+            <textarea name="recommendation_text" cols="30" rows="5" placeholder="Enter recommendation"></textarea>
             <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
         </form>
           
@@ -47,13 +58,16 @@
         </summary>
         <div class="pl-4 pr-2 pb-2">
           <!-- Details to show when the dropdown is open -->
-          <textarea name="" disabled id="" >
+          {% include 'analysis/water_chemical.html' with sample=sample.microbio %}
+          <br>
+          <textarea style="display: none;" name="" disabled id="" >
             {{ sample.microbio.analysis }}
           </textarea>
           <form method="post" action="{% url 'recommedation:recommend' %}">
             {% csrf_token %}
             <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
-            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
+            <textarea name="interpretation_text" cols="30" rows="5" placeholder="Enter Interpretation"></textarea>
+            <textarea name="recommendation_text" cols="30" rows="5" placeholder="Enter recommendation"></textarea>
             <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
         </form>
         </div>
@@ -68,15 +82,19 @@
           <span>▼</span> <!-- Downward arrow, can be replaced with an icon -->
         </summary>
         <div class="pl-4 pr-2 pb-2 flex-row">
-          <!-- Details to show when the dropdown is open -->
-          <textarea name="" disabled id="" >
-            {{ sample.full.analysis }}
+          <!-- Details to show when the dropdown is open -->        
+          {% include 'analysis/water_chemical.html' with sample=sample.Full %}
+          <br>
+          <textarea style="display: none;" name="" disabled id="" >
+            {{sample.Full.analysis }}
           </textarea>
           <form method="post" action="{% url 'recommedation:recommend' %}">
             {% csrf_token %}
             <input type="hidden" name="sample_id" value="{{ sample.sample_id }}">
-            <textarea name="recommendation_text" cols="30" rows="10" placeholder="Enter recommendation"></textarea>
-            <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit</button>
+            <textarea name="interpretation_text" cols="30" rows="5" placeholder="Enter Interpretation"></textarea>
+            <br><br>
+            <textarea name="recommendation_text" cols="30" rows="5" placeholder="Enter recommendation"></textarea>
+            <button class="p-2 bg-blue-400 rounded-lg"  type="submit">Submit000</button>
         </form>
         </div>
       </details>

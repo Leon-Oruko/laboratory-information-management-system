@@ -9,10 +9,82 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{% static 'recommendation/css/styles.css' %}">
     <title>Document</title>
+    <STYLE>
+        @MEDIA PRINT {
+            /* Hides headers, footers, and navigation bars */
+            HEADER, FOOTER, NAV, ASIDE {
+                DISPLAY: NONE !IMPORTANT;
+            }
+    
+            /* Hides page title */
+            TITLE {
+                DISPLAY: NONE;
+            }
+    
+            /* Hides timestamps, if they have specific classes or IDs */
+            .timestamp, .print-time, .print-date {
+                DISPLAY: NONE !IMPORTANT;
+            }
+    
+            /* Removes links */
+            A:AFTER {
+                CONTENT: NONE !IMPORTANT;
+            }
+        }
+        nav {
+            background-color: rgba(95, 70, 165, 0.9);
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            align-items: center;
+            background-blend-mode: overlay;
+            background-size: cover;
+            background-image: url('{% static "managment/images/bg.jpg" %}');
+        }
+        .toggle-nav{
+            width: 60px;
+            overflow: hidden;
+            display: flex;
+            padding-inline-start: 10px;
+            right: -10px;
+            z-index: 100;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+
+        }
+        .side-menu.minimized,.side-menu.minimized a {
+            width: 60px; /* Width when minimized */
+            place-items: center;
+        }
+        .side-menu.minimized h1
+         {
+            display: none; /* Hide text and icons when minimized */
+        }
+        .side-menu.minimized .fa
+         {
+            display: block; /* Hide text and icons when minimized */
+            place-self: center;
+        }
+        #toggleNav{
+            background-color: rgba(163, 133, 246, 0.9);
+            padding: 10px;
+            border-radius:10px ;
+            color: white;
+        }
+        .content.minimized{
+            padding-left: 90px;
+            padding-right: 40px;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+    </STYLE>
+    
 </head>
 <body class="overflow-hidden">
     <!-- App bar -->
-    <nav class="sticky top-0 z-50 w-screen">
+     <nav class="sticky top-0 z-50 w-screen">
         <div class="nav-center">
         
         <!-- Logged in user -->
@@ -32,13 +104,13 @@
         <div class="logout">
             <a href="{% url 'login:logout' %}" class="text-blue-200">Logout</a>
         <i class="fa fa-sign-out text-green-950" aria-hidden="true"></i>
-        </div>
+        </div>        
     </nav>
     <nav class="side-menu bg-gray-900 overflow-hidden  fixed h-screen justify-start py-10">
         <div>
             <a href="{% url 'management:samples' %}" class="dashboard {% if request.path == '/management/samples/' %}bg-indigo-100 text-gray-900 {% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
                 <i class="fa fa-tachometer mr-1"></i>
-                <p class="block whitespace-nowrap px-3">Lab</p>
+                <h1 class="block whitespace-nowrap px-3">Lab</h1>
             </a> 
             
             <a href="{% url 'management:users' %}" class="new-samples {% if request.path == '/management/users/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
@@ -46,7 +118,7 @@
                 <i class="fa fa-info"></i>
                 <h1 class="block whitespace-nowrap px-3">Users</h1>
             </a>
-
+ 
             <a href="{% url 'management:new-sample' %}" class="new-samples {% if request.path == '/management/new/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
                 <i class="fa fa-history"></i>
                 <h1 class="block whitespace-nowrap px-3">New Sample</h1>
@@ -59,7 +131,15 @@
                 <i class="fa fa-history"></i>
                 <h1 class="block whitespace-nowrap px-3">History</h1>
             </a>
-                       
+            <a href="{% url 'management:invoice'%}" class="new-samples {% if request.path == '/management/invoice/' %}bg-indigo-100 text-gray-900{% endif %} rounded-l-md text-white hover:text-gray-900 hover:bg-indigo-100 flex items-center">
+                <i class="fa-solid fa-file-invoice"></i>
+                <h1 class="block whitespace-nowrap px-3">Invoice</h1>
+            </a>
+            <div class="toggle-nav ">
+                <button id="toggleNav" onclick="toggleNav()">
+                    <span class="arrow">◄</span>
+                </button>
+            </div>   
         </div>
 
     </nav>
@@ -67,5 +147,27 @@
         {% block content %}
         {% endblock %}
     </div>
+    <script>
+        function toggleNav() {
+            const sideNav = document.querySelector('.side-menu');
+            const contentArea = document.querySelector('.content');
+            const arrow = document.querySelector('#toggleNav .arrow');
+    
+            // Toggle the 'minimized' class to adjust the width of the side menu
+            sideNav.classList.toggle('minimized');
+    
+            // Toggle the 'minimized' class for the content area to adjust its margin
+            contentArea.classList.toggle('minimized');
+    
+            // Toggle the arrow direction
+            if (arrow.textContent === '◄') {
+            arrow.textContent = '►'; // Right arrow
+        } else {
+            arrow.textContent = '◄'; // Left arrow
+        }
+        }
+    </script>
+    
+    
 </body>
 </html>

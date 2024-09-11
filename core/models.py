@@ -92,10 +92,20 @@ class CustomUsers(AbstractUser):
 
 #     def __str__(self): 
 #         return f'{self.first_name}~{self.post}'
-
+class Parameter(models.Model):
+    name = models.CharField(max_length=255)
+    max_limits=models.CharField(max_length=255,null=True)
+    test_method=models.CharField(max_length=255,null=True)    
+    description = models.TextField(blank=True, null=True)
+    is_water = models.BooleanField(default=False)  # Checkbox for water parameter
+    is_non_water = models.BooleanField(default=True)  # Checkbox for non-water parameter
+    def __str__(self):
+        return self.name
+    
 class Industry(models.Model):
     Industry_id=models.IntegerField(auto_created=True)
     Industry_type=models.CharField(max_length=150)
+    parameters = models.ManyToManyField(Parameter, related_name='industries')
     class Meta:
         ordering = ['Industry_type']
     def __str__(self):
@@ -192,9 +202,20 @@ class LabManagerTask(models.Model):
         return f'{self.sample.sample_id}~{self.processed_by}'
     
 
-class ChangeLog(models.Model):
-    class Meta:
-        managed = False  # This prevents Django from creating tables for this model
+# class ChangeLog(models.Model):
+#     class Meta:
+#         managed = False  
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     user = models.ForeignKey(CustomUsers, on_delete=models.SET_NULL, null=True)
+#     model_name = models.CharField(max_length=100)
+#     object_id = models.PositiveIntegerField()
+#     action = models.CharField(max_length=20)  # 'create', 'update', 'delete'
+#     details = models.TextField()
+
+#     def __str__(self):
+#         return f'{self.timestamp}~{self.user}'
+    
+class ChangeLog(models.Model):     
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(CustomUsers, on_delete=models.SET_NULL, null=True)
     model_name = models.CharField(max_length=100)
@@ -209,21 +230,21 @@ class ChangeLog(models.Model):
 class Microbio(models.Model):
     sample=models.OneToOneField(Sample,on_delete=models.CASCADE,null=False)
     # other records
-    analysis=models.TextField(default='ANALYISIS')
-    recommendation=models.TextField(default='RECOMMENDATION')
+    analysis=models.JSONField(default=list,null=True)
+    recommendation=models.JSONField(default=list,null=True)
     def __str__(self):
         return self.sample.sample_id
 class Full(models.Model):
     sample=models.OneToOneField(Sample,on_delete=models.CASCADE,null=False)
     # other records
-    analysis=models.TextField(default='ANALYISIS')
-    recommendation=models.TextField(default='RECOMMENDATION')
+    analysis=models.JSONField(default=list,null=True)
+    recommendation=models.JSONField(default=list,null=True)
     def __str__(self):
         return self.sample.sample_id
 class Chemical(models.Model):
     sample=models.OneToOneField(Sample,on_delete=models.CASCADE,null=False)
-    recommendation=models.TextField(default='RECOMMENDATION')
+    recommendation=models.JSONField(default=list,null=True)
     # other records`
-    analysis=models.TextField(default='ANALYISIS')
+    analysis=models.JSONField(default=list)
     def __str__(self):
         return self.sample.sample_id
